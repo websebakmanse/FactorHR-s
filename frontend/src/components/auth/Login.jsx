@@ -81,7 +81,7 @@ const Login = () => {
           <a href="#" className="text-white hover:underline transition-all">
             Sign up
           </a>
-         
+         <h1>welcome</h1>
         </p>
       </div>
     </div>
