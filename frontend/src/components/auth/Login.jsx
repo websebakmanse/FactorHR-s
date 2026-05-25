@@ -18,9 +18,9 @@ const Login = () => {
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-slate-950 overflow-hidden p-4">
       {/* Background Glowing Blobs */}
-      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-600 rounded-full mix-blend-screen filter blur-[128px] opacity-70"></div>
-      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-indigo-600 rounded-full mix-blend-screen filter blur-[128px] opacity-70"></div>
-      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-pink-600 rounded-full mix-blend-screen filter blur-[128px] opacity-40"></div>
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-yellow-500 rounded-full mix-blend-screen filter blur-[128px] opacity-70"></div>
+      <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-amber-500 rounded-full mix-blend-screen filter blur-[128px] opacity-70"></div>
+      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-yellow-600 rounded-full mix-blend-screen filter blur-[128px] opacity-40"></div>
 
       {/* Enhanced Glassmorphism Card */}
       <div className="relative w-full max-w-md bg-white/10 backdrop-blur-2xl border-t border-l border-white/30 border-r border-b border-white/10 p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] z-10">
@@ -37,7 +37,7 @@ const Login = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-5 py-3 rounded-xl bg-black/20 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-purple-400 focus:bg-black/40 focus:ring-1 focus:ring-purple-400 transition-all duration-300 backdrop-blur-sm"
+              className="w-full px-5 py-3 rounded-xl bg-black/20 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-yellow-400 focus:bg-black/40 focus:ring-1 focus:ring-yellow-400 transition-all duration-300 backdrop-blur-sm"
               placeholder="you@example.com"
               required
             />
@@ -52,7 +52,7 @@ const Login = () => {
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-5 py-3 rounded-xl bg-black/20 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-purple-400 focus:bg-black/40 focus:ring-1 focus:ring-purple-400 transition-all duration-300 backdrop-blur-sm"
+              className="w-full px-5 py-3 rounded-xl bg-black/20 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-yellow-400 focus:bg-black/40 focus:ring-1 focus:ring-yellow-400 transition-all duration-300 backdrop-blur-sm"
               placeholder="••••••••"
               required
             />
@@ -60,7 +60,7 @@ const Login = () => {
 
           <div className="flex items-center justify-between text-sm">
             <label className="flex items-center text-white/70 hover:text-white cursor-pointer transition-colors">
-              <input type="checkbox" className="mr-2 rounded border-white/20 bg-black/20 accent-purple-500 cursor-pointer" />
+              <input type="checkbox" className="mr-2 rounded border-white/20 bg-black/20 accent-yellow-500 cursor-pointer" />
               Remember me
             </label>
             <a href="#" className="text-white/70 hover:text-white transition-colors">
@@ -70,7 +70,7 @@ const Login = () => {
 
           <button 
             type="submit" 
-            className="w-full py-3.5 px-4 rounded-xl font-bold text-white bg-gradient-to-r from-purple-500 to-indigo-600 hover:from-purple-400 hover:to-indigo-500 border border-white/10 shadow-lg hover:shadow-purple-500/30 transform hover:-translate-y-0.5 transition-all duration-300 ease-in-out"
+            className="w-full py-3.5 px-4 rounded-xl font-bold text-slate-900 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 border border-white/10 shadow-lg hover:shadow-yellow-500/30 transform hover:-translate-y-0.5 transition-all duration-300 ease-in-out"
           >
             Sign In
           </button>

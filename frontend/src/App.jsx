@@ -1,11 +1,12 @@
 import React from 'react'
-import Login from './pages/Auth/Login'
+import HrDashBoard from './components/hr/HrDashBoard'
+
+
 
 const App = () => {
   return (
     <div>
-      
-      <Login/>
+     <HrDashBoard/>
     </div>
   )
 }
