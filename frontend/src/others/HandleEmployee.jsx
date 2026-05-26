@@ -57,7 +57,7 @@ const HandleEmployee = () => {
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col xl:flex-row items-center xl:items-start justify-center bg-slate-950 overflow-x-hidden overflow-y-auto p-4 md:p-10 gap-10 xl:gap-8">
+    <div className="relative min-h-screen flex flex-col xl:flex-row items-center xl:items-stretch justify-center bg-slate-950 overflow-x-hidden overflow-y-auto p-4 md:p-10 gap-10 xl:gap-8">
       {/* Background Glowing Blobs */}
       <div className="fixed top-1/4 left-1/4 w-96 h-96 bg-yellow-500 rounded-full mix-blend-screen filter blur-[128px] opacity-40 animate-pulse pointer-events-none"></div>
       <div className="fixed bottom-1/4 right-1/4 w-96 h-96 bg-amber-600 rounded-full mix-blend-screen filter blur-[128px] opacity-40 animate-pulse delay-1000 pointer-events-none"></div>
@@ -123,14 +123,15 @@ const HandleEmployee = () => {
       </div>
 
       {/* Employee Requests Management Card */}
-      <div className="relative w-full flex-1 max-w-4xl xl:max-w-none bg-white/10 backdrop-blur-2xl border-t border-l border-white/30 border-r border-b border-white/10 p-8 md:p-12 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] z-10">
+      <div className="relative w-full flex-1 max-w-4xl xl:max-w-none z-10">
+        <div className="xl:absolute xl:inset-0 w-full h-full flex flex-col bg-white/10 backdrop-blur-2xl border-t border-l border-white/30 border-r border-b border-white/10 p-8 md:p-12 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
         <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent opacity-10 rounded-3xl pointer-events-none"></div>
 
         <h2 className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-500 text-center mb-10 relative z-10">
           Manage Employee Requests
         </h2>
 
-        <div className="space-y-6 relative z-10">
+        <div className="space-y-6 relative z-10 flex-1 max-h-[500px] sm:max-h-[600px] xl:max-h-none overflow-y-auto pr-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
           {requests.length === 0 ? (
             <p className="text-center text-white/60 text-lg font-medium bg-black/20 py-10 rounded-2xl border border-white/10">
               No pending requests at the moment. 🎉
@@ -197,6 +198,7 @@ const HandleEmployee = () => {
               </div>
             ))
           )}
+        </div>
         </div>
       </div>
     </div>

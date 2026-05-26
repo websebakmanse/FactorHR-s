@@ -1,19 +1,18 @@
-import React,{useState} from 'react'
+import React, { useState } from "react";
 
-const Login = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
+const Login = ({ handleLogin }) => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    console.log('Email:', email)
-    console.log('Password:', password)
+    e.preventDefault();
+    console.log("Email:", email);
+    console.log("Password:", password);
 
-    alert("Login successful")
-    setEmail('')
-    setPassword('')
-  }
-
+    handleLogin(email, password);
+    setEmail("");
+    setPassword("");
+  };
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-slate-950 overflow-hidden p-4">
@@ -25,15 +24,20 @@ const Login = () => {
       {/* Enhanced Glassmorphism Card */}
       <div className="relative w-full max-w-md bg-white/10 backdrop-blur-2xl border-t border-l border-white/30 border-r border-b border-white/10 p-10 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] z-10">
         <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent opacity-20 rounded-3xl pointer-events-none"></div>
-        <h2 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-white/60 text-center mb-8 relative z-10">Welcome Back</h2>
-        
+        <h2 className="text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-white to-white/60 text-center mb-8 relative z-10">
+          Welcome Back
+        </h2>
+
         <form className="space-y-6 relative z-10" onSubmit={handleSubmit}>
           <div>
-            <label className="block text-sm font-medium text-white/80 mb-2" htmlFor="email">
+            <label
+              className="block text-sm font-medium text-white/80 mb-2"
+              htmlFor="email"
+            >
               Email Address
             </label>
-            <input 
-              type="email" 
+            <input
+              type="email"
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -44,11 +48,14 @@ const Login = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-white/80 mb-2" htmlFor="password">
+            <label
+              className="block text-sm font-medium text-white/80 mb-2"
+              htmlFor="password"
+            >
               Password
             </label>
-            <input 
-              type="password" 
+            <input
+              type="password"
               id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -60,16 +67,22 @@ const Login = () => {
 
           <div className="flex items-center justify-between text-sm">
             <label className="flex items-center text-white/70 hover:text-white cursor-pointer transition-colors">
-              <input type="checkbox" className="mr-2 rounded border-white/20 bg-black/20 accent-yellow-500 cursor-pointer" />
+              <input
+                type="checkbox"
+                className="mr-2 rounded border-white/20 bg-black/20 accent-yellow-500 cursor-pointer"
+              />
               Remember me
             </label>
-            <a href="#" className="text-white/70 hover:text-white transition-colors">
+            <a
+              href="#"
+              className="text-white/70 hover:text-white transition-colors"
+            >
               Forgot Password?
             </a>
           </div>
 
-          <button 
-            type="submit" 
+          <button
+            type="submit"
             className="w-full py-3.5 px-4 rounded-xl font-bold text-slate-900 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 border border-white/10 shadow-lg hover:shadow-yellow-500/30 transform hover:-translate-y-0.5 transition-all duration-300 ease-in-out"
           >
             Sign In
@@ -77,14 +90,14 @@ const Login = () => {
         </form>
 
         <p className="mt-8 text-center text-sm text-white/60">
-          Don't have an account?{' '}
+          Don't have an account?{" "}
           <a href="#" className="text-white hover:underline transition-all">
             Sign up
           </a>
         </p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Login
+export default Login;
