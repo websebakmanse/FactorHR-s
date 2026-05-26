@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-const inputCls = "w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400/40 transition-all duration-200 text-sm [color-scheme:dark]";
-const labelCls = "block text-xs font-semibold text-white/50 uppercase tracking-wider mb-1.5";
+const inputCls = "w-full px-4 py-2.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-800 placeholder-slate-400 focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-100 transition-all duration-200 text-sm [color-scheme:light]";
+const labelCls = "block text-xs font-bold text-slate-500 uppercase tracking-wider mb-1.5";
 
 const RequestToHr = () => {
   const [activeCard, setActiveCard] = useState("leave");
@@ -44,26 +44,26 @@ const RequestToHr = () => {
     <div className="p-4 md:p-8 space-y-6">
       {/* Toast */}
       {toast && (
-        <div className="fixed top-6 right-6 z-50 px-5 py-3 rounded-xl shadow-2xl text-sm font-semibold bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 transition-all duration-300">
+        <div className="fixed top-5 right-5 z-50 px-5 py-3 rounded-xl shadow-lg text-sm font-semibold bg-emerald-50 border border-emerald-200 text-emerald-700">
           ✓ {toast}
         </div>
       )}
 
       <div>
-        <h1 className="text-2xl md:text-3xl font-extrabold text-white">Requests</h1>
-        <p className="text-white/40 text-sm mt-1">Submit leave, punch corrections, or update your profile</p>
+        <h1 className="text-2xl md:text-3xl font-extrabold text-slate-800">Requests</h1>
+        <p className="text-slate-400 text-sm mt-0.5">Submit leave, punch corrections, or update your profile</p>
       </div>
 
       {/* Tab Switcher */}
-      <div className="flex gap-2 bg-white/5 border border-white/10 rounded-xl p-1.5 w-fit">
+      <div className="flex gap-1 bg-slate-100 border border-slate-200 rounded-xl p-1 w-fit">
         {tabs.map((tab) => (
           <button
             key={tab.id}
             onClick={() => setActiveCard(tab.id)}
             className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200
               ${activeCard === tab.id
-                ? "bg-yellow-400/10 text-yellow-400 border border-yellow-400/20"
-                : "text-white/40 hover:text-white"
+                ? "bg-white text-amber-700 shadow-sm border border-amber-100"
+                : "text-slate-500 hover:text-slate-700"
               }`}
           >
             <span>{tab.icon}</span>
@@ -72,32 +72,32 @@ const RequestToHr = () => {
         ))}
       </div>
 
-      {/* Leave Balance Banner */}
+      {/* Leave Balance */}
       {activeCard === "leave" && (
-        <div className="grid grid-cols-3 gap-3 max-w-sm">
+        <div className="grid grid-cols-3 gap-3 max-w-xs">
           {[
-            { label: "Casual", value: 10, color: "text-yellow-400" },
-            { label: "Sick", value: 4, color: "text-rose-400" },
-            { label: "Privilege", value: 15, color: "text-emerald-400" },
+            { label: "Casual", value: 10, color: "text-amber-700", bg: "bg-amber-50 border-amber-100" },
+            { label: "Sick", value: 4, color: "text-rose-700", bg: "bg-rose-50 border-rose-100" },
+            { label: "Privilege", value: 15, color: "text-emerald-700", bg: "bg-emerald-50 border-emerald-100" },
           ].map((b) => (
-            <div key={b.label} className="bg-white/5 border border-white/10 rounded-xl p-3 text-center">
+            <div key={b.label} className={`${b.bg} border rounded-xl p-3 text-center`}>
               <p className={`text-2xl font-extrabold ${b.color}`}>{b.value}</p>
-              <p className="text-white/40 text-xs mt-0.5">{b.label}</p>
+              <p className="text-slate-500 text-xs mt-0.5 font-medium">{b.label}</p>
             </div>
           ))}
         </div>
       )}
 
-      {/* Card Content */}
-      <div className="bg-white/5 border border-white/10 rounded-2xl p-6 max-w-2xl">
+      {/* Form Card */}
+      <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden max-w-2xl">
 
         {/* Apply Leave */}
         {activeCard === "leave" && (
-          <form onSubmit={handleLeaveSubmit} className="space-y-4">
-            <h2 className="text-lg font-bold text-white mb-4">Apply for Leave</h2>
+          <form onSubmit={handleLeaveSubmit} className="p-6 space-y-4">
+            <h2 className="text-base font-bold text-slate-800 mb-4">Apply for Leave</h2>
             <div>
               <label className={labelCls}>Leave Type</label>
-              <select value={leaveForm.type} onChange={(e) => setLeaveForm({ ...leaveForm, type: e.target.value })} className={inputCls + " [&>option]:bg-slate-900"} required>
+              <select value={leaveForm.type} onChange={(e) => setLeaveForm({ ...leaveForm, type: e.target.value })} className={inputCls} required>
                 <option value="" disabled>Select leave type</option>
                 <option value="casual">Casual Leave</option>
                 <option value="sick">Sick Leave</option>
@@ -118,7 +118,7 @@ const RequestToHr = () => {
               <label className={labelCls}>Reason</label>
               <textarea value={leaveForm.reason} onChange={(e) => setLeaveForm({ ...leaveForm, reason: e.target.value })} placeholder="Briefly describe your reason..." className={inputCls + " resize-none min-h-[100px]"} required />
             </div>
-            <button type="submit" className="w-full py-3 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 transition-all text-sm shadow-lg shadow-yellow-500/20">
+            <button type="submit" className="w-full py-3 rounded-xl font-bold text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 transition-all text-sm shadow-md shadow-amber-200">
               Submit Leave Request
             </button>
           </form>
@@ -126,9 +126,9 @@ const RequestToHr = () => {
 
         {/* Correct Punch */}
         {activeCard === "punch" && (
-          <form onSubmit={handlePunchSubmit} className="space-y-4">
-            <h2 className="text-lg font-bold text-white mb-1">Correct Punch In/Out</h2>
-            <div className="flex items-center gap-2 bg-rose-500/10 border border-rose-500/20 rounded-xl px-4 py-3 text-sm text-rose-300">
+          <form onSubmit={handlePunchSubmit} className="p-6 space-y-4">
+            <h2 className="text-base font-bold text-slate-800 mb-1">Correct Punch In/Out</h2>
+            <div className="flex items-center gap-2 bg-rose-50 border border-rose-200 rounded-xl px-4 py-3 text-sm text-rose-700 font-medium">
               <span>⚠️</span>
               <span>Missing Punch Out detected — 25 May 2026</span>
             </div>
@@ -150,7 +150,7 @@ const RequestToHr = () => {
               <label className={labelCls}>Reason</label>
               <textarea value={punchForm.reason} onChange={(e) => setPunchForm({ ...punchForm, reason: e.target.value })} placeholder="Explain the reason for correction..." className={inputCls + " resize-none min-h-[100px]"} required />
             </div>
-            <button type="submit" className="w-full py-3 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 transition-all text-sm shadow-lg shadow-yellow-500/20">
+            <button type="submit" className="w-full py-3 rounded-xl font-bold text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 transition-all text-sm shadow-md shadow-amber-200">
               Submit Correction Request
             </button>
           </form>
@@ -158,22 +158,25 @@ const RequestToHr = () => {
 
         {/* Profile */}
         {activeCard === "profile" && (
-          <div>
-            <h2 className="text-lg font-bold text-white mb-5">My Profile</h2>
+          <div className="p-6">
+            <h2 className="text-base font-bold text-slate-800 mb-5">My Profile</h2>
             {!isEditingProfile ? (
-              <div className="space-y-4">
+              <div className="space-y-3">
                 {[
-                  { label: "Phone Number", value: profileForm.phone },
-                  { label: "Address", value: profileForm.address },
+                  { label: "Phone Number", value: profileForm.phone, icon: "📞" },
+                  { label: "Address", value: profileForm.address, icon: "📍" },
                 ].map((field) => (
-                  <div key={field.label} className="bg-white/5 border border-white/10 rounded-xl px-4 py-3">
-                    <p className="text-xs text-white/30 uppercase tracking-wider font-semibold mb-1">{field.label}</p>
-                    <p className="text-white font-medium text-sm">{field.value || "Not provided"}</p>
+                  <div key={field.label} className="flex items-start gap-3 bg-slate-50 border border-slate-200 rounded-xl px-4 py-3">
+                    <span className="text-lg mt-0.5">{field.icon}</span>
+                    <div>
+                      <p className="text-xs text-slate-400 font-semibold uppercase tracking-wider">{field.label}</p>
+                      <p className="text-slate-800 font-medium text-sm mt-0.5">{field.value || "Not provided"}</p>
+                    </div>
                   </div>
                 ))}
                 <button
                   onClick={() => setIsEditingProfile(true)}
-                  className="w-full py-3 rounded-xl font-bold text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-all text-sm mt-2"
+                  className="w-full py-3 rounded-xl font-bold text-slate-700 bg-slate-100 hover:bg-slate-200 border border-slate-200 transition-all text-sm mt-2"
                 >
                   Edit Profile
                 </button>
@@ -189,10 +192,10 @@ const RequestToHr = () => {
                   <textarea value={profileForm.address} onChange={(e) => setProfileForm({ ...profileForm, address: e.target.value })} className={inputCls + " resize-none min-h-[80px]"} placeholder="Your current address" required />
                 </div>
                 <div className="flex gap-3">
-                  <button type="button" onClick={() => setIsEditingProfile(false)} className="flex-1 py-3 rounded-xl font-bold text-rose-400 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 transition-all text-sm">
+                  <button type="button" onClick={() => setIsEditingProfile(false)} className="flex-1 py-3 rounded-xl font-bold text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-200 transition-all text-sm">
                     Cancel
                   </button>
-                  <button type="submit" className="flex-1 py-3 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 transition-all text-sm">
+                  <button type="submit" className="flex-1 py-3 rounded-xl font-bold text-white bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 transition-all text-sm">
                     Save Changes
                   </button>
                 </div>

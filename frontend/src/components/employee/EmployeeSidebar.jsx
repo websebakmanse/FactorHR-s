@@ -27,18 +27,16 @@ const EmployeeSidebar = ({ activeTab, setActiveTab, isOpen, onClose }) => {
 
   return (
     <aside
-      className={`fixed lg:static inset-y-0 left-0 z-30 w-64 bg-slate-900 border-r border-white/5 flex flex-col transform transition-transform duration-300 ease-in-out
+      className={`fixed lg:static inset-y-0 left-0 z-30 w-64 bg-white border-r border-slate-200 flex flex-col shadow-xl transform transition-transform duration-300 ease-in-out
         ${isOpen ? "translate-x-0" : "-translate-x-full"} lg:translate-x-0`}
     >
       {/* Logo */}
-      <div className="flex items-center gap-3 px-6 py-5 border-b border-white/5">
-        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-yellow-400 to-amber-600 flex items-center justify-center text-slate-950 font-extrabold text-lg shadow">
+      <div className="flex items-center gap-3 px-6 py-5 border-b border-slate-100">
+        <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-amber-400 to-orange-500 flex items-center justify-center text-white font-extrabold text-lg shadow-md shadow-amber-200">
           F
         </div>
-        <span className="text-xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-500">
-          FactoHR
-        </span>
-        <button onClick={onClose} className="ml-auto lg:hidden text-white/40 hover:text-white">
+        <span className="text-xl font-extrabold text-slate-800">FactoHR</span>
+        <button onClick={onClose} className="ml-auto lg:hidden text-slate-400 hover:text-slate-700">
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
@@ -46,44 +44,45 @@ const EmployeeSidebar = ({ activeTab, setActiveTab, isOpen, onClose }) => {
       </div>
 
       {/* User Info */}
-      <div className="px-6 py-4 border-b border-white/5">
+      <div className="px-5 py-4 border-b border-slate-100 bg-emerald-50/60">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400/30 to-teal-600/30 border border-emerald-500/30 flex items-center justify-center text-emerald-400 font-bold text-lg">
+          <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center text-white font-bold text-lg shadow-sm">
             {user?.name?.charAt(0).toUpperCase()}
           </div>
           <div>
-            <p className="text-sm font-semibold text-white truncate max-w-[130px]">{user?.name}</p>
-            <p className="text-xs text-emerald-400 capitalize font-medium">{user?.designation || user?.role}</p>
+            <p className="text-sm font-bold text-slate-800 truncate max-w-[130px]">{user?.name}</p>
+            <p className="text-xs text-emerald-600 capitalize font-semibold">{user?.designation || user?.role}</p>
           </div>
         </div>
       </div>
 
       {/* Nav */}
       <nav className="flex-1 px-3 py-4 space-y-1">
+        <p className="text-xs font-bold text-slate-400 uppercase tracking-widest px-3 mb-3">Menu</p>
         {navItems.map((item) => (
           <button
             key={item.id}
             onClick={() => setActiveTab(item.id)}
             className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold transition-all duration-200
               ${activeTab === item.id
-                ? "bg-yellow-400/10 text-yellow-400 border border-yellow-400/20"
-                : "text-white/50 hover:text-white hover:bg-white/5"
+                ? "bg-amber-50 text-amber-700 border border-amber-200 shadow-sm"
+                : "text-slate-500 hover:text-slate-800 hover:bg-slate-50"
               }`}
           >
-            {item.icon}
+            <span className={activeTab === item.id ? "text-amber-500" : "text-slate-400"}>{item.icon}</span>
             {item.label}
             {activeTab === item.id && (
-              <span className="ml-auto w-1.5 h-1.5 rounded-full bg-yellow-400"></span>
+              <span className="ml-auto w-2 h-2 rounded-full bg-amber-500"></span>
             )}
           </button>
         ))}
       </nav>
 
       {/* Logout */}
-      <div className="px-3 py-4 border-t border-white/5">
+      <div className="px-3 py-4 border-t border-slate-100">
         <button
           onClick={logout}
-          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-rose-400 hover:bg-rose-500/10 transition-all duration-200"
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-semibold text-rose-500 hover:bg-rose-50 transition-all duration-200"
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
