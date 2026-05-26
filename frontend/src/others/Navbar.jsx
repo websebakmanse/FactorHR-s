@@ -1,25 +1,26 @@
 import React from "react";
 
-const Navbar = () => {
+// Navbar is now only used as a mobile top bar trigger — sidebars handle full nav.
+// Pass onMenuClick prop to show hamburger on mobile.
+const Navbar = ({ onMenuClick }) => {
   return (
-    <nav className="flex items-center justify-between px-6 py-4 bg-yellow-100 backdrop-blur-lg border-b border-yellow-500/20 shadow-[0_4px_30px_rgba(0,0,0,0.1)] sticky top-0 z-50">
-      {/* Left side: Company Logo */}
-      <div className="flex items-center space-x-3 cursor-pointer">
-        <div className="w-10 h-10 rounded-full bg-gradient-to-br from-yellow-400 to-amber-600 flex items-center justify-center text-slate-950 font-extrabold text-xl shadow-md">
-          A
+    <div className="lg:hidden flex items-center justify-between px-4 py-3 bg-slate-900 border-b border-white/5 sticky top-0 z-10">
+      <div className="flex items-center gap-2">
+        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-400 to-amber-600 flex items-center justify-center text-slate-950 font-extrabold text-sm">
+          F
         </div>
-        <span className="text-2xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-500 tracking-wide">
-          ABC
+        <span className="text-lg font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-500">
+          FactoHR
         </span>
       </div>
-
-      {/* Right side: Logout Button */}
-      <div>
-        <button className="px-5 py-2.5 text-sm font-bold text-slate-950 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 !rounded-full shadow-[0_0_15px_rgba(234,179,8,0.3)] transform hover:-translate-y-0.5 transition-all duration-300 ease-in-out border border-white/10">
-          Logout
+      {onMenuClick && (
+        <button onClick={onMenuClick} className="text-white/60 hover:text-white p-1">
+          <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
         </button>
-      </div>
-    </nav>
+      )}
+    </div>
   );
 };
 

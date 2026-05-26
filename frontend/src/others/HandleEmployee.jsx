@@ -1,205 +1,183 @@
 import React, { useState } from "react";
 
+const initialRequests = [
+  { id: 1, name: "John Doe", avatar: "J", type: "Leave", details: "Sick Leave", date: "Oct 10 - Oct 12", status: "Pending" },
+  { id: 2, name: "Alice Smith", avatar: "A", type: "Punch", details: "Missed Punch In", date: "Oct 09", status: "Pending" },
+  { id: 3, name: "David Johnson", avatar: "D", type: "Leave", details: "Casual Leave", date: "Oct 15", status: "Pending" },
+  { id: 4, name: "Sarah Williams", avatar: "S", type: "Punch", details: "Wrong Punch Out", date: "Oct 08", status: "Pending" },
+];
+
+const inputCls = "w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400/50 transition-all duration-200 text-sm";
+const labelCls = "block text-xs font-semibold text-white/50 uppercase tracking-wider mb-1.5";
+
 const HandleEmployee = () => {
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    phone: "",
-    department: "",
-    role: "",
-  });
+  const [formData, setFormData] = useState({ fullName: "", email: "", phone: "", department: "", role: "" });
+  const [requests, setRequests] = useState(initialRequests);
+  const [toast, setToast] = useState(null);
 
-  // Mock data for employee requests
-  const [requests, setRequests] = useState([
-    { id: 1, name: "John Doe", type: "Leave", details: "Sick Leave", date: "Oct 10 - Oct 12", status: "Pending" },
-    { id: 2, name: "Alice Smith", type: "Punch", details: "Missed Punch In", date: "Oct 09", status: "Pending" },
-    { id: 3, name: "David Johnson", type: "Leave", details: "Casual Leave", date: "Oct 15", status: "Pending" },
-    { id: 4, name: "Sarah Williams", type: "Punch", details: "Wrong Punch Out time", date: "Oct 08", status: "Pending" },
-  ]);
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.id]: e.target.value });
+  const showToast = (msg, type = "success") => {
+    setToast({ msg, type });
+    setTimeout(() => setToast(null), 3000);
   };
+
+  const handleChange = (e) => setFormData({ ...formData, [e.target.id]: e.target.value });
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Employee Data Submitted:", formData);
-    alert("Employee registered successfully!");
-    // Clear form after submission
-    setFormData({
-      fullName: "",
-      email: "",
-      phone: "",
-      department: "",
-      role: "",
-    });
+    showToast(`${formData.fullName} registered successfully!`);
+    setFormData({ fullName: "", email: "", phone: "", department: "", role: "" });
   };
 
-  // Handlers for the actions
-  const handleApproveLeave = (id) => {
-    alert(`Leave Approved for request #${id}`);
-    setRequests(requests.filter((req) => req.id !== id));
-  };
-
-  const handleRejectLeave = (id) => {
-    alert(`Leave Rejected for request #${id}`);
-    setRequests(requests.filter((req) => req.id !== id));
-  };
-
-  const handleCorrectPunchIn = (id) => {
-    alert(`Punch In time corrected for request #${id}`);
-    setRequests(requests.filter((req) => req.id !== id));
-  };
-
-  const handleCorrectPunchOut = (id) => {
-    alert(`Punch Out time corrected for request #${id}`);
-    setRequests(requests.filter((req) => req.id !== id));
+  const handleAction = (id, action) => {
+    const req = requests.find((r) => r.id === id);
+    showToast(`${req.name}'s ${req.type.toLowerCase()} request ${action}d.`, action === "approve" ? "success" : "error");
+    setRequests(requests.filter((r) => r.id !== id));
   };
 
   return (
-    <div className="relative min-h-screen flex flex-col xl:flex-row items-center xl:items-stretch justify-center bg-slate-950 overflow-x-hidden overflow-y-auto p-4 md:p-10 gap-10 xl:gap-8">
-      {/* Background Glowing Blobs */}
-      <div className="fixed top-1/4 left-1/4 w-96 h-96 bg-yellow-500 rounded-full mix-blend-screen filter blur-[128px] opacity-40 animate-pulse pointer-events-none"></div>
-      <div className="fixed bottom-1/4 right-1/4 w-96 h-96 bg-amber-600 rounded-full mix-blend-screen filter blur-[128px] opacity-40 animate-pulse delay-1000 pointer-events-none"></div>
+    <div className="p-4 md:p-8 space-y-8 relative">
+      {/* Toast */}
+      {toast && (
+        <div className={`fixed top-6 right-6 z-50 px-5 py-3 rounded-xl shadow-2xl text-sm font-semibold border transition-all duration-300
+          ${toast.type === "success"
+            ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-300"
+            : "bg-rose-500/20 border-rose-500/30 text-rose-300"
+          }`}>
+          {toast.msg}
+        </div>
+      )}
 
-      {/* Enhanced Glassmorphism Card (Registration Form) */}
-      <div className="relative w-full flex-1 max-w-3xl xl:max-w-none bg-white/10 backdrop-blur-2xl border-t border-l border-white/30 border-r border-b border-white/10 p-8 md:p-12 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] z-10">
-        <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent opacity-10 rounded-3xl pointer-events-none"></div>
+      <div>
+        <h1 className="text-2xl md:text-3xl font-extrabold text-white">Employee Management</h1>
+        <p className="text-white/40 text-sm mt-1">Register new employees and manage requests</p>
+      </div>
 
-        <h2 className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-500 text-center mb-10 relative z-10">
-          Register New Employee
-        </h2>
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
 
-        <form className="space-y-6 relative z-10" onSubmit={handleSubmit}>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Full Name */}
-            <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-white/80 mb-2" htmlFor="fullName">Full Name</label>
-              <input type="text" id="fullName" value={formData.fullName} onChange={handleChange} className="w-full px-5 py-3 rounded-xl bg-black/20 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-yellow-400 focus:bg-black/40 focus:ring-1 focus:ring-yellow-400 transition-all duration-300 backdrop-blur-sm" placeholder="John Doe" required />
+        {/* Register Employee Form */}
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+          <div className="flex items-center gap-3 mb-6">
+            <div className="w-9 h-9 rounded-xl bg-yellow-400/10 border border-yellow-400/20 flex items-center justify-center text-yellow-400">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+              </svg>
             </div>
-
-            {/* Email Address */}
             <div>
-              <label className="block text-sm font-medium text-white/80 mb-2" htmlFor="email">Email Address</label>
-              <input type="email" id="email" value={formData.email} onChange={handleChange} className="w-full px-5 py-3 rounded-xl bg-black/20 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-yellow-400 focus:bg-black/40 focus:ring-1 focus:ring-yellow-400 transition-all duration-300 backdrop-blur-sm" placeholder="john.doe@company.com" required />
-            </div>
-
-            {/* Phone Number */}
-            <div>
-              <label className="block text-sm font-medium text-white/80 mb-2" htmlFor="phone">Phone Number</label>
-              <input type="tel" id="phone" value={formData.phone} onChange={handleChange} className="w-full px-5 py-3 rounded-xl bg-black/20 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-yellow-400 focus:bg-black/40 focus:ring-1 focus:ring-yellow-400 transition-all duration-300 backdrop-blur-sm" placeholder="+1 (555) 000-0000" required />
-            </div>
-
-            {/* Department */}
-            <div>
-              <label className="block text-sm font-medium text-white/80 mb-2" htmlFor="department">Department</label>
-              <select id="department" value={formData.department} onChange={handleChange} className="w-full px-5 py-3 rounded-xl bg-black/20 border border-white/10 text-white focus:outline-none focus:border-yellow-400 focus:bg-black/40 focus:ring-1 focus:ring-yellow-400 transition-all duration-300 backdrop-blur-sm [&>option]:bg-slate-900" required>
-                <option value="" disabled className="text-white/40">Select Department</option>
-                <option value="Java">Java</option>
-                <option value="Python">Python</option>
-                <option value="MERN">MERN</option>
-                <option value=".NET">.NET</option>
-                <option value="DevOps">DevOps</option>
-                <option value="Tester">Tester</option>
-              </select>
-            </div>
-
-            {/* Role / Designation */}
-            <div>
-              <label className="block text-sm font-medium text-white/80 mb-2" htmlFor="role">Role / Designation</label>
-              <input type="text" id="role" value={formData.role} onChange={handleChange} className="w-full px-5 py-3 rounded-xl bg-black/20 border border-white/10 text-white placeholder-white/40 focus:outline-none focus:border-yellow-400 focus:bg-black/40 focus:ring-1 focus:ring-yellow-400 transition-all duration-300 backdrop-blur-sm" placeholder="Software Engineer" required />
+              <h2 className="text-lg font-bold text-white">Register New Employee</h2>
+              <p className="text-white/40 text-xs">Fill in the details below</p>
             </div>
           </div>
 
-          <div className="pt-6">
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className={labelCls} htmlFor="fullName">Full Name</label>
+              <input type="text" id="fullName" value={formData.fullName} onChange={handleChange} className={inputCls} placeholder="John Doe" required />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className={labelCls} htmlFor="email">Email</label>
+                <input type="email" id="email" value={formData.email} onChange={handleChange} className={inputCls} placeholder="john@company.com" required />
+              </div>
+              <div>
+                <label className={labelCls} htmlFor="phone">Phone</label>
+                <input type="tel" id="phone" value={formData.phone} onChange={handleChange} className={inputCls} placeholder="+91 98765 43210" required />
+              </div>
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label className={labelCls} htmlFor="department">Department</label>
+                <select id="department" value={formData.department} onChange={handleChange} className={inputCls + " [&>option]:bg-slate-900"} required>
+                  <option value="" disabled>Select</option>
+                  {["Java", "Python", "MERN", ".NET", "DevOps", "Tester"].map((d) => (
+                    <option key={d} value={d}>{d}</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <label className={labelCls} htmlFor="role">Designation</label>
+                <input type="text" id="role" value={formData.role} onChange={handleChange} className={inputCls} placeholder="Software Engineer" required />
+              </div>
+            </div>
             <button
               type="submit"
-              className="w-full py-4 px-4 !rounded-xl font-extrabold text-slate-950 text-lg tracking-wide bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 border border-white/10 shadow-[0_0_20px_rgba(234,179,8,0.3)] transform hover:-translate-y-1 transition-all duration-300 ease-in-out"
+              className="w-full py-3 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 transition-all duration-200 mt-2 text-sm tracking-wide shadow-lg shadow-yellow-500/20"
             >
               Create Employee
             </button>
-          </div>
-        </form>
-      </div>
+          </form>
+        </div>
 
-      {/* Employee Requests Management Card */}
-      <div className="relative w-full flex-1 max-w-4xl xl:max-w-none z-10">
-        <div className="xl:absolute xl:inset-0 w-full h-full flex flex-col bg-white/10 backdrop-blur-2xl border-t border-l border-white/30 border-r border-b border-white/10 p-8 md:p-12 rounded-3xl shadow-[0_8px_32px_0_rgba(0,0,0,0.5)]">
-        <div className="absolute inset-0 bg-gradient-to-b from-white/20 to-transparent opacity-10 rounded-3xl pointer-events-none"></div>
-
-        <h2 className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-500 text-center mb-10 relative z-10">
-          Manage Employee Requests
-        </h2>
-
-        <div className="space-y-6 relative z-10 flex-1 max-h-[500px] sm:max-h-[600px] xl:max-h-none overflow-y-auto pr-1 [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-          {requests.length === 0 ? (
-            <p className="text-center text-white/60 text-lg font-medium bg-black/20 py-10 rounded-2xl border border-white/10">
-              No pending requests at the moment. 🎉
-            </p>
-          ) : (
-            requests.map((req) => (
-              <div
-                key={req.id}
-                className="bg-black/20 border border-white/10 p-6 rounded-2xl flex flex-col 2xl:flex-row justify-between items-center gap-6 transition-all duration-300 hover:bg-black/30 hover:border-yellow-500/30 backdrop-blur-sm group"
-              >
-                {/* Request Info */}
-                <div className="flex-1 w-full text-center 2xl:text-left">
-                  <div className="flex flex-col 2xl:flex-row items-center justify-center 2xl:justify-start gap-3 mb-2">
-                    <h3 className="text-xl font-bold text-white tracking-wide">{req.name}</h3>
-                    <span
-                      className={`px-3 py-1 text-xs font-bold rounded-full uppercase tracking-wider ${
-                        req.type === "Leave"
-                          ? "bg-amber-500/20 text-amber-400 border border-amber-500/30"
-                          : "bg-indigo-500/20 text-indigo-400 border border-indigo-500/30"
-                      }`}
-                    >
-                      {req.type}
-                    </span>
-                  </div>
-                  <p className="text-white/70 text-sm">
-                    {req.details} &bull; <span className="text-yellow-400/80 font-medium">{req.date}</span>
-                  </p>
-                </div>
-
-                {/* Actions */}
-                <div className="flex flex-wrap items-center justify-center gap-3 w-full 2xl:w-auto">
-                  {req.type === "Leave" ? (
-                    <>
-                      <button
-                        onClick={() => handleApproveLeave(req.id)}
-                        className="px-6 py-2.5 !rounded-xl font-bold text-green-400 bg-green-500/10 hover:bg-green-500/20 border border-green-500/30 shadow-[0_0_15px_rgba(34,197,94,0.1)] hover:shadow-[0_0_20px_rgba(34,197,94,0.2)] transform hover:-translate-y-0.5 transition-all duration-300"
-                      >
-                        Approve
-                      </button>
-                      <button
-                        onClick={() => handleRejectLeave(req.id)}
-                        className="px-6 py-2.5 !rounded-xl font-bold text-rose-400 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 shadow-[0_0_15px_rgba(244,63,94,0.1)] hover:shadow-[0_0_20px_rgba(244,63,94,0.2)] transform hover:-translate-y-0.5 transition-all duration-300"
-                      >
-                        Reject
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <button
-                        onClick={() => handleCorrectPunchIn(req.id)}
-                        className="px-5 py-2.5 !rounded-xl font-bold text-slate-950 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 shadow-[0_0_15px_rgba(234,179,8,0.3)] transform hover:-translate-y-0.5 transition-all duration-300 border border-white/10"
-                      >
-                        Correct Punch In
-                      </button>
-                      <button
-                        onClick={() => handleCorrectPunchOut(req.id)}
-                        className="px-5 py-2.5 !rounded-xl font-bold text-white bg-slate-800 hover:bg-slate-700 border border-white/20 shadow-lg transform hover:-translate-y-0.5 transition-all duration-300"
-                      >
-                        Correct Punch Out
-                      </button>
-                    </>
-                  )}
-                </div>
+        {/* Manage Requests */}
+        <div className="bg-white/5 border border-white/10 rounded-2xl p-6 flex flex-col">
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-rose-400/10 border border-rose-400/20 flex items-center justify-center text-rose-400">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                </svg>
               </div>
-            ))
-          )}
+              <div>
+                <h2 className="text-lg font-bold text-white">Pending Requests</h2>
+                <p className="text-white/40 text-xs">Approve or reject employee requests</p>
+              </div>
+            </div>
+            {requests.length > 0 && (
+              <span className="text-xs font-bold px-2.5 py-1 rounded-full bg-rose-500/20 text-rose-400 border border-rose-500/20">
+                {requests.length}
+              </span>
+            )}
+          </div>
+
+          <div className="flex-1 space-y-3 overflow-y-auto max-h-[420px] pr-1 [&::-webkit-scrollbar]:hidden">
+            {requests.length === 0 ? (
+              <div className="text-center py-16 text-white/20">
+                <svg className="w-12 h-12 mx-auto mb-3 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <p className="font-medium text-sm">No pending requests</p>
+              </div>
+            ) : (
+              requests.map((req) => (
+                <div
+                  key={req.id}
+                  className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white/5 hover:bg-white/8 border border-white/5 hover:border-yellow-500/20 rounded-xl p-4 transition-all duration-200"
+                >
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-gradient-to-br from-yellow-400/20 to-amber-600/10 border border-yellow-500/20 flex items-center justify-center text-yellow-400 font-bold text-sm flex-shrink-0">
+                      {req.avatar}
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2">
+                        <p className="text-white font-semibold text-sm">{req.name}</p>
+                        <span className={`px-2 py-0.5 text-xs font-bold rounded-full ${
+                          req.type === "Leave" ? "bg-amber-500/20 text-amber-400" : "bg-indigo-500/20 text-indigo-400"
+                        }`}>
+                          {req.type}
+                        </span>
+                      </div>
+                      <p className="text-white/40 text-xs mt-0.5">{req.details} · {req.date}</p>
+                    </div>
+                  </div>
+                  <div className="flex gap-2 flex-shrink-0">
+                    <button
+                      onClick={() => handleAction(req.id, "approve")}
+                      className="px-3 py-1.5 rounded-lg text-xs font-bold text-emerald-400 bg-emerald-500/10 hover:bg-emerald-500/20 border border-emerald-500/20 transition-all"
+                    >
+                      ✓ Approve
+                    </button>
+                    <button
+                      onClick={() => handleAction(req.id, "reject")}
+                      className="px-3 py-1.5 rounded-lg text-xs font-bold text-rose-400 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 transition-all"
+                    >
+                      ✕ Reject
+                    </button>
+                  </div>
+                </div>
+              ))
+            )}
+          </div>
         </div>
-        </div>
+
       </div>
     </div>
   );

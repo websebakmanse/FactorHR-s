@@ -1,135 +1,205 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
+
+const inputCls = "w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-white/30 focus:outline-none focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400/40 transition-all duration-200 text-sm [color-scheme:dark]";
+const labelCls = "block text-xs font-semibold text-white/50 uppercase tracking-wider mb-1.5";
 
 const RequestToHr = () => {
-  // State management for different forms
-  const [leaveForm, setLeaveForm] = useState({ type: '', from: '', to: '', reason: '' });
-  const [punchForm, setPunchForm] = useState({ date: '', punchIn: '', punchOut: '', reason: '' });
-  const [profileForm, setProfileForm] = useState({ phone: '+1 234 567 890', address: '123 Tech Street, NY' });
+  const [activeCard, setActiveCard] = useState("leave");
+  const [leaveForm, setLeaveForm] = useState({ type: "", from: "", to: "", reason: "" });
+  const [punchForm, setPunchForm] = useState({ date: "", punchIn: "", punchOut: "", reason: "" });
+  const [profileForm, setProfileForm] = useState({ phone: "+91 98765 43210", address: "123 Tech Street, Pune" });
   const [isEditingProfile, setIsEditingProfile] = useState(false);
+  const [toast, setToast] = useState(null);
 
-  // Submit Handlers
+  const showToast = (msg) => {
+    setToast(msg);
+    setTimeout(() => setToast(null), 3000);
+  };
+
   const handleLeaveSubmit = (e) => {
     e.preventDefault();
-    alert('Leave request submitted successfully!');
-    setLeaveForm({ type: '', from: '', to: '', reason: '' });
+    showToast("Leave request submitted successfully!");
+    setLeaveForm({ type: "", from: "", to: "", reason: "" });
   };
 
   const handlePunchSubmit = (e) => {
     e.preventDefault();
-    alert('Punch correction requested!');
-    setPunchForm({ date: '', punchIn: '', punchOut: '', reason: '' });
+    showToast("Punch correction request submitted!");
+    setPunchForm({ date: "", punchIn: "", punchOut: "", reason: "" });
   };
 
   const handleProfileSubmit = (e) => {
     e.preventDefault();
-    alert('Profile updated successfully!');
+    showToast("Profile updated successfully!");
     setIsEditingProfile(false);
   };
 
+  const tabs = [
+    { id: "leave", label: "Apply Leave", icon: "📅" },
+    { id: "punch", label: "Correct Punch", icon: "⏱" },
+    { id: "profile", label: "My Profile", icon: "👤" },
+  ];
+
   return (
-    <div className="relative min-h-screen bg-slate-950 overflow-x-hidden overflow-y-auto p-4 md:p-10 flex flex-col items-center">
-      {/* Background Glowing Blobs */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 bg-yellow-500 rounded-full mix-blend-screen filter blur-[128px] opacity-30 pointer-events-none"></div>
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-amber-600 rounded-full mix-blend-screen filter blur-[128px] opacity-30 pointer-events-none"></div>
-
-      <h2 className="text-3xl md:text-4xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-amber-500 text-center mb-10 relative z-10">
-        Employee Actions Panel
-      </h2>
-
-      {/* Main Flex/Grid Container for 3 Sections */}
-      <div className="flex lg:grid flex-nowrap lg:grid-cols-3 gap-6 lg:gap-8 w-full max-w-7xl relative z-10 overflow-x-auto pb-8 snap-x snap-mandatory scroll-smooth [&::-webkit-scrollbar]:hidden [-ms-overflow-style:none] [scrollbar-width:none]">
-        
-        {/* 1. Apply Leave Section */}
-        <div className="bg-white/10 backdrop-blur-xl border border-white/20 p-6 lg:p-8 rounded-3xl shadow-2xl flex flex-col w-[85vw] sm:w-[400px] lg:w-auto flex-shrink-0 snap-center">
-          <h3 className="text-2xl font-bold text-white mb-4">Apply for Leave</h3>
-          
-          {/* Leave Balances */}
-          <div className="flex justify-between bg-black/20 p-4 rounded-xl border border-white/10 mb-6 text-sm text-white/80">
-            <div className="text-center">
-              <p className="font-semibold text-yellow-400 text-lg">10</p>
-              <p>Casual</p>
-            </div>
-            <div className="text-center">
-              <p className="font-semibold text-rose-400 text-lg">4</p>
-              <p>Sick</p>
-            </div>
-            <div className="text-center">
-              <p className="font-semibold text-green-400 text-lg">15</p>
-              <p>Privilege</p>
-            </div>
-          </div>
-
-          {/* Leave Form */}
-          <form onSubmit={handleLeaveSubmit} className="flex flex-col gap-4 flex-1">
-            <select value={leaveForm.type} onChange={(e) => setLeaveForm({...leaveForm, type: e.target.value})} className="w-full px-4 py-3 rounded-xl bg-black/20 border border-white/10 text-white focus:border-yellow-400 outline-none [&>option]:bg-slate-900" required>
-              <option value="" disabled>Select Leave Type</option>
-              <option value="casual">Casual Leave</option>
-              <option value="sick">Sick Leave</option>
-              <option value="privilege">Privilege Leave</option>
-            </select>
-            <div className="grid grid-cols-2 gap-4">
-              <input type="date" value={leaveForm.from} onChange={(e) => setLeaveForm({...leaveForm, from: e.target.value})} className="w-full px-4 py-3 rounded-xl bg-black/20 border border-white/10 text-white focus:border-yellow-400 outline-none [color-scheme:dark]" required title="From Date" />
-              <input type="date" value={leaveForm.to} onChange={(e) => setLeaveForm({...leaveForm, to: e.target.value})} className="w-full px-4 py-3 rounded-xl bg-black/20 border border-white/10 text-white focus:border-yellow-400 outline-none [color-scheme:dark]" required title="To Date" />
-            </div>
-            <textarea value={leaveForm.reason} onChange={(e) => setLeaveForm({...leaveForm, reason: e.target.value})} placeholder="Reason for leave..." className="w-full px-4 py-3 rounded-xl bg-black/20 border border-white/10 text-white focus:border-yellow-400 outline-none resize-none flex-1 min-h-[100px]" required></textarea>
-            <button type="submit" className="mt-auto w-full py-3 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 transition-all">Submit Leave</button>
-          </form>
+    <div className="p-4 md:p-8 space-y-6">
+      {/* Toast */}
+      {toast && (
+        <div className="fixed top-6 right-6 z-50 px-5 py-3 rounded-xl shadow-2xl text-sm font-semibold bg-emerald-500/20 border border-emerald-500/30 text-emerald-300 transition-all duration-300">
+          ✓ {toast}
         </div>
+      )}
 
-        {/* 2. Correct Punch Section */}
-        <div className="bg-white/10 backdrop-blur-xl border border-white/20 p-6 lg:p-8 rounded-3xl shadow-2xl flex flex-col w-[85vw] sm:w-[400px] lg:w-auto flex-shrink-0 snap-center">
-          <h3 className="text-2xl font-bold text-white mb-4">Correct Punch In/Out</h3>
-          
-          {/* Missing Punch Alert */}
-          <div className="bg-rose-500/20 border border-rose-500/30 p-4 rounded-xl mb-6 text-sm text-rose-200">
-            <p className="font-semibold flex items-center gap-2">⚠️ Missing Punch Out detected</p>
-            <p className="text-rose-200/70 mt-1">Date: 25 May 2026</p>
-          </div>
+      <div>
+        <h1 className="text-2xl md:text-3xl font-extrabold text-white">Requests</h1>
+        <p className="text-white/40 text-sm mt-1">Submit leave, punch corrections, or update your profile</p>
+      </div>
 
-          {/* Correct Punch Form */}
-          <form onSubmit={handlePunchSubmit} className="flex flex-col gap-4 flex-1">
-            <input type="date" value={punchForm.date} onChange={(e) => setPunchForm({...punchForm, date: e.target.value})} className="w-full px-4 py-3 rounded-xl bg-black/20 border border-white/10 text-white focus:border-yellow-400 outline-none [color-scheme:dark]" required title="Date of Missing Punch" />
-            <div className="grid grid-cols-2 gap-4">
-              <input type="time" value={punchForm.punchIn} onChange={(e) => setPunchForm({...punchForm, punchIn: e.target.value})} className="w-full px-4 py-3 rounded-xl bg-black/20 border border-white/10 text-white focus:border-yellow-400 outline-none [color-scheme:dark]" required title="Actual In Time" />
-              <input type="time" value={punchForm.punchOut} onChange={(e) => setPunchForm({...punchForm, punchOut: e.target.value})} className="w-full px-4 py-3 rounded-xl bg-black/20 border border-white/10 text-white focus:border-yellow-400 outline-none [color-scheme:dark]" required title="Actual Out Time" />
+      {/* Tab Switcher */}
+      <div className="flex gap-2 bg-white/5 border border-white/10 rounded-xl p-1.5 w-fit">
+        {tabs.map((tab) => (
+          <button
+            key={tab.id}
+            onClick={() => setActiveCard(tab.id)}
+            className={`flex items-center gap-2 px-4 py-2 rounded-lg text-sm font-semibold transition-all duration-200
+              ${activeCard === tab.id
+                ? "bg-yellow-400/10 text-yellow-400 border border-yellow-400/20"
+                : "text-white/40 hover:text-white"
+              }`}
+          >
+            <span>{tab.icon}</span>
+            <span className="hidden sm:inline">{tab.label}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Leave Balance Banner */}
+      {activeCard === "leave" && (
+        <div className="grid grid-cols-3 gap-3 max-w-sm">
+          {[
+            { label: "Casual", value: 10, color: "text-yellow-400" },
+            { label: "Sick", value: 4, color: "text-rose-400" },
+            { label: "Privilege", value: 15, color: "text-emerald-400" },
+          ].map((b) => (
+            <div key={b.label} className="bg-white/5 border border-white/10 rounded-xl p-3 text-center">
+              <p className={`text-2xl font-extrabold ${b.color}`}>{b.value}</p>
+              <p className="text-white/40 text-xs mt-0.5">{b.label}</p>
             </div>
-            <textarea value={punchForm.reason} onChange={(e) => setPunchForm({...punchForm, reason: e.target.value})} placeholder="Reason for correction..." className="w-full px-4 py-3 rounded-xl bg-black/20 border border-white/10 text-white focus:border-yellow-400 outline-none resize-none flex-1 min-h-[100px]" required></textarea>
-            <button type="submit" className="mt-auto w-full py-3 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 transition-all">Request Correction</button>
-          </form>
+          ))}
         </div>
+      )}
 
-        {/* 3. Edit Profile Section */}
-        <div className="bg-white/10 backdrop-blur-xl border border-white/20 p-6 lg:p-8 rounded-3xl shadow-2xl flex flex-col w-[85vw] sm:w-[400px] lg:w-auto flex-shrink-0 snap-center">
-          <h3 className="text-2xl font-bold text-white mb-4">My Profile</h3>
+      {/* Card Content */}
+      <div className="bg-white/5 border border-white/10 rounded-2xl p-6 max-w-2xl">
 
-          {!isEditingProfile ? (
-            <div className="flex flex-col flex-1">
-              <div className="bg-black/20 p-4 rounded-xl border border-white/10 mb-6 text-white/80 space-y-4 flex-1">
+        {/* Apply Leave */}
+        {activeCard === "leave" && (
+          <form onSubmit={handleLeaveSubmit} className="space-y-4">
+            <h2 className="text-lg font-bold text-white mb-4">Apply for Leave</h2>
+            <div>
+              <label className={labelCls}>Leave Type</label>
+              <select value={leaveForm.type} onChange={(e) => setLeaveForm({ ...leaveForm, type: e.target.value })} className={inputCls + " [&>option]:bg-slate-900"} required>
+                <option value="" disabled>Select leave type</option>
+                <option value="casual">Casual Leave</option>
+                <option value="sick">Sick Leave</option>
+                <option value="privilege">Privilege Leave</option>
+              </select>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className={labelCls}>From Date</label>
+                <input type="date" value={leaveForm.from} onChange={(e) => setLeaveForm({ ...leaveForm, from: e.target.value })} className={inputCls} required />
+              </div>
+              <div>
+                <label className={labelCls}>To Date</label>
+                <input type="date" value={leaveForm.to} onChange={(e) => setLeaveForm({ ...leaveForm, to: e.target.value })} className={inputCls} required />
+              </div>
+            </div>
+            <div>
+              <label className={labelCls}>Reason</label>
+              <textarea value={leaveForm.reason} onChange={(e) => setLeaveForm({ ...leaveForm, reason: e.target.value })} placeholder="Briefly describe your reason..." className={inputCls + " resize-none min-h-[100px]"} required />
+            </div>
+            <button type="submit" className="w-full py-3 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 transition-all text-sm shadow-lg shadow-yellow-500/20">
+              Submit Leave Request
+            </button>
+          </form>
+        )}
+
+        {/* Correct Punch */}
+        {activeCard === "punch" && (
+          <form onSubmit={handlePunchSubmit} className="space-y-4">
+            <h2 className="text-lg font-bold text-white mb-1">Correct Punch In/Out</h2>
+            <div className="flex items-center gap-2 bg-rose-500/10 border border-rose-500/20 rounded-xl px-4 py-3 text-sm text-rose-300">
+              <span>⚠️</span>
+              <span>Missing Punch Out detected — 25 May 2026</span>
+            </div>
+            <div>
+              <label className={labelCls}>Date</label>
+              <input type="date" value={punchForm.date} onChange={(e) => setPunchForm({ ...punchForm, date: e.target.value })} className={inputCls} required />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div>
+                <label className={labelCls}>Actual Punch In</label>
+                <input type="time" value={punchForm.punchIn} onChange={(e) => setPunchForm({ ...punchForm, punchIn: e.target.value })} className={inputCls} required />
+              </div>
+              <div>
+                <label className={labelCls}>Actual Punch Out</label>
+                <input type="time" value={punchForm.punchOut} onChange={(e) => setPunchForm({ ...punchForm, punchOut: e.target.value })} className={inputCls} required />
+              </div>
+            </div>
+            <div>
+              <label className={labelCls}>Reason</label>
+              <textarea value={punchForm.reason} onChange={(e) => setPunchForm({ ...punchForm, reason: e.target.value })} placeholder="Explain the reason for correction..." className={inputCls + " resize-none min-h-[100px]"} required />
+            </div>
+            <button type="submit" className="w-full py-3 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 transition-all text-sm shadow-lg shadow-yellow-500/20">
+              Submit Correction Request
+            </button>
+          </form>
+        )}
+
+        {/* Profile */}
+        {activeCard === "profile" && (
+          <div>
+            <h2 className="text-lg font-bold text-white mb-5">My Profile</h2>
+            {!isEditingProfile ? (
+              <div className="space-y-4">
+                {[
+                  { label: "Phone Number", value: profileForm.phone },
+                  { label: "Address", value: profileForm.address },
+                ].map((field) => (
+                  <div key={field.label} className="bg-white/5 border border-white/10 rounded-xl px-4 py-3">
+                    <p className="text-xs text-white/30 uppercase tracking-wider font-semibold mb-1">{field.label}</p>
+                    <p className="text-white font-medium text-sm">{field.value || "Not provided"}</p>
+                  </div>
+                ))}
+                <button
+                  onClick={() => setIsEditingProfile(true)}
+                  className="w-full py-3 rounded-xl font-bold text-white bg-white/5 hover:bg-white/10 border border-white/10 transition-all text-sm mt-2"
+                >
+                  Edit Profile
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleProfileSubmit} className="space-y-4">
                 <div>
-                  <p className="text-xs text-white/50 uppercase tracking-wider mb-1">Phone Number</p>
-                  <p className="text-lg font-medium text-white">{profileForm.phone || "Not provided"}</p>
+                  <label className={labelCls}>Phone Number</label>
+                  <input type="tel" value={profileForm.phone} onChange={(e) => setProfileForm({ ...profileForm, phone: e.target.value })} className={inputCls} placeholder="+91 98765 43210" required />
                 </div>
                 <div>
-                  <p className="text-xs text-white/50 uppercase tracking-wider mb-1">Address</p>
-                  <p className="text-base text-white break-words">{profileForm.address || "Not provided"}</p>
+                  <label className={labelCls}>Address</label>
+                  <textarea value={profileForm.address} onChange={(e) => setProfileForm({ ...profileForm, address: e.target.value })} className={inputCls + " resize-none min-h-[80px]"} placeholder="Your current address" required />
                 </div>
-              </div>
-              <button onClick={() => setIsEditingProfile(true)} className="mt-auto w-full py-3 rounded-xl font-bold text-white bg-slate-800 hover:bg-slate-700 border border-white/20 shadow-lg transform hover:-translate-y-0.5 transition-all duration-300">
-                Edit Profile
-              </button>
-            </div>
-          ) : (
-            <form onSubmit={handleProfileSubmit} className="flex flex-col gap-4 flex-1 mt-2">
-              <input type="tel" value={profileForm.phone} onChange={(e) => setProfileForm({...profileForm, phone: e.target.value})} placeholder="Phone Number (+1 234 567 890)" className="w-full px-4 py-3 rounded-xl bg-black/20 border border-white/10 text-white focus:border-yellow-400 outline-none" required />
-              <textarea value={profileForm.address} onChange={(e) => setProfileForm({...profileForm, address: e.target.value})} placeholder="Your current address..." className="w-full px-4 py-3 rounded-xl bg-black/20 border border-white/10 text-white focus:border-yellow-400 outline-none resize-none flex-1 min-h-[100px]" required></textarea>
-              <div className="flex gap-4 mt-auto">
-                <button type="button" onClick={() => setIsEditingProfile(false)} className="w-full py-3 rounded-xl font-bold text-white bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/30 transition-all">Cancel</button>
-                <button type="submit" className="w-full py-3 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 transition-all">Save</button>
-              </div>
-            </form>
-          )}
-          
-        </div>
+                <div className="flex gap-3">
+                  <button type="button" onClick={() => setIsEditingProfile(false)} className="flex-1 py-3 rounded-xl font-bold text-rose-400 bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 transition-all text-sm">
+                    Cancel
+                  </button>
+                  <button type="submit" className="flex-1 py-3 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-yellow-400 to-amber-500 hover:from-yellow-300 hover:to-amber-400 transition-all text-sm">
+                    Save Changes
+                  </button>
+                </div>
+              </form>
+            )}
+          </div>
+        )}
 
       </div>
     </div>
