@@ -72,13 +72,17 @@ const generateRefreshToken = async (user) => {
 // Secure = only sent over HTTPS in production
 // SameSite = prevents CSRF attacks
 // -------------------------------------------------------
+const cookieOptions = {
+  httpOnly: true, // JS cannot access this cookie
+  secure: process.env.NODE_ENV === "production", // HTTPS only in production
+  sameSite: "none", // allow cross-site refresh requests from the frontend
+  path: "/", // cookie available for all routes
+};
+
 const setRefreshTokenCookie = (res, token) => {
   res.cookie("refreshToken", token, {
-    httpOnly: true,  // JS cannot access this cookie
-    secure: process.env.NODE_ENV === "production", // HTTPS only in production
-    sameSite: "strict", // cookie only sent to same site
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
-    path: "/", // cookie available for all routes
+    ...cookieOptions,
+    maxAge: parseExpiry(process.env.REFRESH_TOKEN_EXPIRY),
   });
 };
 
@@ -89,11 +93,8 @@ const setRefreshTokenCookie = (res, token) => {
 // -------------------------------------------------------
 const clearRefreshTokenCookie = (res) => {
   res.cookie("refreshToken", "", {
-    httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
-    sameSite: "strict",
+    ...cookieOptions,
     maxAge: 0, // expire immediately = delete cookie
-    path: "/",
   });
 };
 
