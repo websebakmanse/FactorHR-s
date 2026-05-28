@@ -7,6 +7,24 @@
 const jwt = require("jsonwebtoken");
 const RefreshToken = require("../models/RefreshToken");
 
+const parseExpiry = (expiry) => {
+  // Parse strings like "15m", "7d", "1h" into milliseconds
+  if (!expiry) return 7 * 24 * 60 * 60 * 1000;
+  const match = expiry.match(/^(\d+)([smhd])$/i);
+  if (!match) return 7 * 24 * 60 * 60 * 1000;
+
+  const value = Number(match[1]);
+  const unit = match[2].toLowerCase();
+  const multipliers = {
+    s: 1000,
+    m: 60 * 1000,
+    h: 60 * 60 * 1000,
+    d: 24 * 60 * 60 * 1000,
+  };
+
+  return value * (multipliers[unit] || 7 * 24 * 60 * 60 * 1000);
+};
+
 // -------------------------------------------------------
 // generateAccessToken
 // Creates a short-lived JWT (15 minutes)
@@ -38,8 +56,8 @@ const generateRefreshToken = async (user) => {
     { expiresIn: process.env.REFRESH_TOKEN_EXPIRY } // "7d"
   );
 
-  // Calculate expiry date: now + 7 days
-  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+  // Calculate expiry date using REFRESH_TOKEN_EXPIRY from .env
+  const expiresAt = new Date(Date.now() + parseExpiry(process.env.REFRESH_TOKEN_EXPIRY));
 
   // Save token to database so we can validate/revoke it
   await RefreshToken.create({ token, user: user._id, expiresAt });
