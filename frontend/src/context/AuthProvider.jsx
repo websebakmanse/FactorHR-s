@@ -87,6 +87,7 @@ const AuthProvider = ({ children }) => {
         // No valid refresh token — user needs to login again
         setAccessToken(null);
         setUser(null);
+        setAuthHeader(null); // Clear any stale Authorization header
       } finally {
         // Done checking — hide the loading spinner
         setIsLoading(false);
